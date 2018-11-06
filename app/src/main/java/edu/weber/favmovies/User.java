@@ -1,6 +1,6 @@
 package edu.weber.favmovies;
 
-public class UserModel {
+public class User {
 
     private String uid;
     private String imageUrl;
