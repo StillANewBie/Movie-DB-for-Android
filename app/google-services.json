@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "390924399295",
+    "firebase_url": "https://favmovies-2018.firebaseio.com",
+    "project_id": "favmovies-2018",
+    "storage_bucket": "favmovies-2018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390924399295:android:0a01f15210c7d2b7",
+        "android_client_info": {
+          "package_name": "edu.weber.favmovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390924399295-u0v8bfaib45hmpk6gv2nak68ima8laqd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHPAKExd7YGrSglML-l49q6GTD7PmlqzI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
