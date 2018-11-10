@@ -8,21 +8,21 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/img_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/blank_profile" />
+    <!--<ImageView-->
+        <!--android:id="@+id/img_profile"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:background="@drawable/blank_profile" />-->
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/id"
+        android:hint="@string/email"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:id="@+id/id"/>
+        android:id="@+id/login_email"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,15 +30,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:id="@+id/password"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:id="@+id/name"/>
+        android:id="@+id/login_password"/>
 
     <Button
         android:layout_width="match_parent"
@@ -46,7 +38,16 @@
         android:layout_marginTop="45dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:id="@+id/sign_up"
+        android:id="@+id/login_btn"
+        android:text="@string/login"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:id="@+id/sign_up_btn"
         android:text="@string/sign_up"/>
 
 
