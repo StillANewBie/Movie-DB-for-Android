@@ -2,93 +2,122 @@ package edu.weber.favmovies.db;
 
 public class Movie {
 
-    private String title, year, releasedDate, length, genre, director;
-    private String writer, actors, plot, language, imdbRating, imdbVotes, type;
-    private String imageUrl;
+    private String Title, Year, Released, Runtime, Genre, Director;
+    private String Writer, Actors, Plot, Language, imdbRating, imdbVotes, Type;
+    private String Poster;
+    private String Country;
 
-    public Movie(String title, String year) {
-        this.title = title;
-        this.year = year;
+    public Movie(String title, String year, String released, String runtime,
+                 String genre, String director, String writer, String actors,
+                 String plot, String language, String imdbRating,
+                 String imdbVotes, String type, String poster, String country) {
+        this.Title = title;
+        this.Year = year;
+        this.Released = released;
+        this.Runtime = runtime;
+        this.Genre = genre;
+        this.Director = director;
+        this.Writer = writer;
+        this.Actors = actors;
+        this.Plot = plot;
+        this.Language = language;
+        this.imdbRating = imdbRating;
+        this.imdbVotes = imdbVotes;
+        this.Type = type;
+        this.Poster = poster;
+        this.Country = country;
+    }
+
+    public Movie() {
+
+    }
+
+    public String getCountry() {
+        return Country;
+    }
+
+    public void setCountry(String country) {
+        Country = country;
     }
 
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.Title = title;
     }
 
     public String getYear() {
-        return year;
+        return Year;
     }
 
     public void setYear(String year) {
-        this.year = year;
+        this.Year = year;
     }
 
-    public String getReleasedDate() {
-        return releasedDate;
+    public String getReleased() {
+        return Released;
     }
 
-    public void setReleasedDate(String releasedDate) {
-        this.releasedDate = releasedDate;
+    public void setReleased(String released) {
+        this.Released = released;
     }
 
-    public String getLength() {
-        return length;
+    public String getRuntime() {
+        return Runtime;
     }
 
-    public void setLength(String length) {
-        this.length = length;
+    public void setRuntime(String runtime) {
+        this.Runtime = runtime;
     }
 
     public String getGenre() {
-        return genre;
+        return Genre;
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
+        this.Genre = genre;
     }
 
     public String getDirector() {
-        return director;
+        return Director;
     }
 
     public void setDirector(String director) {
-        this.director = director;
+        this.Director = director;
     }
 
     public String getWriter() {
-        return writer;
+        return Writer;
     }
 
     public void setWriter(String writer) {
-        this.writer = writer;
+        this.Writer = writer;
     }
 
     public String getActors() {
-        return actors;
+        return Actors;
     }
 
     public void setActors(String actors) {
-        this.actors = actors;
+        this.Actors = actors;
     }
 
     public String getPlot() {
-        return plot;
+        return Plot;
     }
 
     public void setPlot(String plot) {
-        this.plot = plot;
+        this.Plot = plot;
     }
 
     public String getLanguage() {
-        return language;
+        return Language;
     }
 
     public void setLanguage(String language) {
-        this.language = language;
+        this.Language = language;
     }
 
     public String getImdbRating() {
@@ -108,18 +137,39 @@ public class Movie {
     }
 
     public String getType() {
-        return type;
+        return Type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.Type = type;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPoster() {
+        return Poster;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPoster(String poster) {
+        this.Poster = poster;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "Title='" + Title + '\'' +
+                ", Year='" + Year + '\'' +
+                ", Released='" + Released + '\'' +
+                ", Runtime='" + Runtime + '\'' +
+                ", Genre='" + Genre + '\'' +
+                ", Director='" + Director + '\'' +
+                ", Writer='" + Writer + '\'' +
+                ", Actors='" + Actors + '\'' +
+                ", Plot='" + Plot + '\'' +
+                ", Language='" + Language + '\'' +
+                ", imdbRating='" + imdbRating + '\'' +
+                ", imdbVotes='" + imdbVotes + '\'' +
+                ", Type='" + Type + '\'' +
+                ", Poster='" + Poster + '\'' +
+                ", Country='" + Country + '\'' +
+                '}';
     }
 }
