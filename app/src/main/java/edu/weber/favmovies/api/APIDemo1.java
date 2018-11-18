@@ -1,6 +1,8 @@
 package edu.weber.favmovies.api;
 
 import android.util.Log;
+
+import edu.weber.favmovies.api.Authorization;
 import edu.weber.favmovies.db.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

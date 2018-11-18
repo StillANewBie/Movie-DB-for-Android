@@ -1,35 +1,80 @@
 package edu.weber.favmovies.db;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity
 public class Movie {
 
-    private String Title, Year, Released, Runtime, Genre, Director;
-    private String Writer, Actors, Plot, Language, imdbRating, imdbVotes, Type;
-    private String Poster;
+    @NonNull
+    @PrimaryKey
+    private String imdbID;
+    @ColumnInfo(name = "Title")
+    private String Title;
+    @ColumnInfo(name = "Year")
+    private String Year;
+    @ColumnInfo(name = "imdbRating")
+    private double imdbRating;
+    @ColumnInfo(name = "imdbVotes")
+    private String imdbVotes;
+    @ColumnInfo(name = "Released")
+    private String Released;
+    @ColumnInfo(name = "Runtime")
+    private String Runtime;
+    @ColumnInfo(name = "Genre")
+    private String Genre;
+    @ColumnInfo(name = "Director")
+    private String Director;
+    @ColumnInfo(name = "Writer")
+    private String Writer;
+    @ColumnInfo(name = "Actors")
+    private String Actors;
+    @ColumnInfo(name = "Country")
     private String Country;
+    @ColumnInfo(name = "Plot")
+    private String Plot;
+    @ColumnInfo(name = "Language")
+    private String Language;
+    @ColumnInfo(name = "Type")
+    private String Type;
+    @ColumnInfo(name = "Poster")
+    private String Poster;
 
-    public Movie(String title, String year, String released, String runtime,
-                 String genre, String director, String writer, String actors,
-                 String plot, String language, String imdbRating,
-                 String imdbVotes, String type, String poster, String country) {
-        this.Title = title;
-        this.Year = year;
-        this.Released = released;
-        this.Runtime = runtime;
-        this.Genre = genre;
-        this.Director = director;
-        this.Writer = writer;
-        this.Actors = actors;
-        this.Plot = plot;
-        this.Language = language;
+    public Movie(String imdbID, String title, String year,
+                 double imdbRating, String imdbVotes, String released,
+                 String runtime, String genre, String director, String writer,
+                 String actors, String country, String plot, String language,
+                 String type, String poster) {
+        this.imdbID = imdbID;
+        Title = title;
+        Year = year;
         this.imdbRating = imdbRating;
         this.imdbVotes = imdbVotes;
-        this.Type = type;
-        this.Poster = poster;
-        this.Country = country;
+        Released = released;
+        Runtime = runtime;
+        Genre = genre;
+        Director = director;
+        Writer = writer;
+        Actors = actors;
+        Country = country;
+        Plot = plot;
+        Language = language;
+        Type = type;
+        Poster = poster;
     }
 
     public Movie() {
 
+    }
+
+    public String getImdbID() {
+        return imdbID;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
     }
 
     public String getCountry() {
@@ -120,11 +165,11 @@ public class Movie {
         this.Language = language;
     }
 
-    public String getImdbRating() {
+    public double getImdbRating() {
         return imdbRating;
     }
 
-    public void setImdbRating(String imdbRating) {
+    public void setImdbRating(double imdbRating) {
         this.imdbRating = imdbRating;
     }
 
@@ -152,6 +197,7 @@ public class Movie {
         this.Poster = poster;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Movie{" +
@@ -170,6 +216,7 @@ public class Movie {
                 ", Type='" + Type + '\'' +
                 ", Poster='" + Poster + '\'' +
                 ", Country='" + Country + '\'' +
+                ", imdbID='" + imdbID + '\'' +
                 '}';
     }
 }
