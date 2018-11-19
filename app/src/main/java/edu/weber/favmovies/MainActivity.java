@@ -2,6 +2,9 @@ package edu.weber.favmovies;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +20,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 public class MainActivity extends AppCompatActivity {
 
     private MaterialSearchView searchView;
-    String[] strings = {"a", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c"};
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, strings);
-        listView.setAdapter(adapter);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+
+            }
+        });
     }
 
     @Override

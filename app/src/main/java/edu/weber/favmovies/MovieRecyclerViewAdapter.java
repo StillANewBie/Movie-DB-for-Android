@@ -4,74 +4,78 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import edu.weber.favmovies.db.*;
+
 import edu.weber.favmovies.MovieListFragment.OnListFragmentInteractionListener;
-import edu.weber.favmovies.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Movie> movies;
+    private final OnRecyclerViewAdapterListener mCallback;
 
-    public MovieRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
+    public void addItem(List<Movie> localMovies) {
+        movies.clear();
+        movies.addAll(localMovies);
+        notifyDataSetChanged();
+    }
+
+    public interface OnRecyclerViewAdapterListener {
+        void showMovieDialog(Movie movie);
+    }
+    public MovieRecyclerViewAdapter(List<Movie> items, OnRecyclerViewAdapterListener listener) {
+        movies = items;
+        mCallback = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_movie_view, parent, false);
+                .inflate(R.layout.recycler_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        Movie movie = movies.get(position);
+        if (movie != null) {
+            holder.movie = movie;
+            holder.movieTitle.setText("Title: " + movie.getTitle());
+            holder.movieYear.setText(movie.getYear());
+            new DownloadImageTask(holder.poster).execute(movie.getPoster());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ToDo: attach to a movie view
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return movies.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+        public Movie movie;
+        public TextView movieTitle, movieYear;
+        public ImageView poster;
+        public View view;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            view = itemView;
+            movieTitle = (TextView) itemView.findViewById(R.id.movie_title_card);
+            movieYear = (TextView) itemView.findViewById(R.id.movie_year_card);
+            poster = (ImageView) itemView.findViewById(R.id.thumb_pic);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 }
