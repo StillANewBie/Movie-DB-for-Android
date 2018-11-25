@@ -1,7 +1,5 @@
 package edu.weber.favmovies;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,13 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-public class MainActivity extends AppCompatActivity {
+import edu.weber.favmovies.db.Movie;
+
+public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter
+        .OnRecyclerViewAdapterListener, SearchDialogFragment.OnSearchDialogFragmentComplete {
 
     private MaterialSearchView searchView;
 
@@ -34,12 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();
 
+                SearchDialogFragment sdf = new SearchDialogFragment();
+
+                fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .add(android.R.id.content, sdf)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
@@ -50,5 +55,15 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;
+    }
+
+    @Override
+    public void showMovieDialog(Movie movie) {
+        System.out.println(movie);
+    }
+
+    @Override
+    public void doSearch(String name, String year) {
+
     }
 }

@@ -25,4 +25,9 @@
     <string name="plot">Plot</string>
     <string name="language">Language</string>
     <string name="type">Type</string>
+    <string name="search_dialog_title">Search Movie By Name</string>
+    <string name="movie_name">Movie Name</string>
+    <string name="search_btn">Search</string>
+    <string name="warning_no_blank">Please do not leave blank input</string>
+    <string name="cancel">cancel</string>
 </resources>

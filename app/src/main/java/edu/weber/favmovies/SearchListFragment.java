@@ -19,7 +19,7 @@ import java.util.List;
 
 import edu.weber.favmovies.db.Movie;
 
-public class MovieListFragment extends Fragment {
+public class SearchListFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -28,7 +28,7 @@ public class MovieListFragment extends Fragment {
     private View root;
     private MovieRecyclerViewAdapter.OnRecyclerViewAdapterListener mCallback;
 
-    public MovieListFragment() {
+    public SearchListFragment() {
     }
 
 //    // TODO: Customize parameter initialization
