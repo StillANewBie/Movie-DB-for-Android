@@ -1,7 +1,9 @@
 package edu.weber.favmovies;
 
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,7 +34,7 @@ public class SearchDialogFragment extends DialogFragment {
     public interface OnSearchDialogFragmentComplete {
         void doSearch(String name, String year);
     }
-
+    private OnSearchDialogFragmentComplete mCallback;
 
     public SearchDialogFragment() {
         // Required empty public constructor
@@ -83,7 +86,10 @@ public class SearchDialogFragment extends DialogFragment {
                     Toast.makeText(getContext(), R.string.warning_no_blank, Toast
                             .LENGTH_LONG).show();
                 }
-//
+
+                mCallback.doSearch(movieName, movieYear);
+
+                dismiss();
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -97,7 +103,24 @@ public class SearchDialogFragment extends DialogFragment {
             }
         });
 
-
         return root;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mCallback = (SearchDialogFragment.OnSearchDialogFragmentComplete) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString() + " must implement" +
+                    " OnSearchDialogFragmentComplete.");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 }

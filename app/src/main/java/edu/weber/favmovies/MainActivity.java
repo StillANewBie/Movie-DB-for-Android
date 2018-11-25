@@ -1,5 +1,6 @@
 package edu.weber.favmovies;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                         .commit();
             }
         });
+
     }
 
     @Override
@@ -64,6 +67,20 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
 
     @Override
     public void doSearch(String name, String year) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        bundle.putString("year", year);
+
+        FragmentManager fm = getSupportFragmentManager();
+        SearchListFragment searchListFragment = new SearchListFragment();
+
+        searchListFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, searchListFragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 }
