@@ -11,10 +11,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -23,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +42,6 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import edu.weber.favmovies.api.APIHelper;
 import edu.weber.favmovies.api.Authorization;
 import edu.weber.favmovies.db.Movie;
 
@@ -48,6 +54,8 @@ public class SearchListFragment extends DialogFragment {
     private View root;
     private MovieRecyclerViewAdapter.OnRecyclerViewAdapterListener mCallback;
     String movieName, movieYear;
+    private MaterialSearchView searchView;
+    List<Movie> movies;
 
     public SearchListFragment() {
     }
@@ -65,7 +73,6 @@ public class SearchListFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -77,6 +84,28 @@ public class SearchListFragment extends DialogFragment {
         root = inflater.inflate(R.layout.fragment_search_list, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvSearchList);
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.search_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_results);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+
+        setHasOptionsMenu(true);
+
+        searchView = (MaterialSearchView) root.findViewById(R.id.search_search_view);
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
 
         return root;
     }
@@ -157,7 +186,7 @@ public class SearchListFragment extends DialogFragment {
         Gson gson = gsonBuilder.create();
 
         JsonObject body = gson.fromJson(rawJSON, JsonObject.class);
-        List<Movie> movies = new ArrayList<>();
+        movies = new ArrayList<>();
 
         for (JsonElement jo : body.get("Search").getAsJsonArray()) {
             movies.add(gson.fromJson(jo, Movie.class));
@@ -165,6 +194,35 @@ public class SearchListFragment extends DialogFragment {
 
         adapter.addItem(movies);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        ((AppCompatActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String userInput = newText.toLowerCase();
+                List<Movie> newMovies = new ArrayList<>();
+                System.out.println(userInput);
+                for (Movie el: movies) {
+                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                        newMovies.add(el);
+                    }
+                }
+
+                adapter.addItem(newMovies);
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -183,5 +241,4 @@ public class SearchListFragment extends DialogFragment {
         super.onDetach();
         mCallback = null;
     }
-
 }
