@@ -3,6 +3,7 @@ package edu.weber.favmovies;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -28,9 +29,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
             logo = BitmapFactory.decodeStream(is);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.d("URL", "Bad URL");
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("IO", "IO Error");
         }
 
         return logo;

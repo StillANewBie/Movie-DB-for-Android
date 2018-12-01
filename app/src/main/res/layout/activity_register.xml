@@ -10,10 +10,11 @@
     tools:context=".LoginActivity">
 
     <ImageView
+
         android:id="@+id/img_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/blank_profile" />
 
     <EditText
@@ -48,6 +49,8 @@
         android:layout_marginTop="45dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
+        android:background="@color/dark_blue"
+        android:textColor="@color/colorWhite"
         android:id="@+id/sign_up"
         android:text="@string/sign_up"/>
 

@@ -7,16 +7,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.weber.favmovies.db.AppDatabase;
 import edu.weber.favmovies.db.Movie;
 
 public class MovieListFragment extends Fragment {
@@ -27,19 +38,12 @@ public class MovieListFragment extends Fragment {
     private MovieRecyclerViewAdapter adapter;
     private View root;
     private MovieRecyclerViewAdapter.OnRecyclerViewAdapterListener mCallback;
+    private MaterialSearchView searchView;
+    private AllFavMovieViewModel allFavMovieViewModel;
+    List<Movie> listedMovies = new ArrayList<>();
 
     public MovieListFragment() {
     }
-
-//    // TODO: Customize parameter initialization
-//    @SuppressWarnings("unused")
-//    public static MovieListFragment newInstance(int columnCount) {
-//        MovieListFragment fragment = new MovieListFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class MovieListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
     }
 
     @Override
@@ -56,6 +62,19 @@ public class MovieListFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvMovieList);
+
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.fav_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_results);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+
+        setHasOptionsMenu(true);
+
+        searchView = (MaterialSearchView) root.findViewById(R.id.search_search_view);
 
         return root;
     }
@@ -85,9 +104,40 @@ public class MovieListFragment extends Fragment {
                     public void onChanged(@Nullable List<Movie> movies) {
                         if (movies != null) {
                             adapter.addItem(movies);
+                            listedMovies = movies;
                         }
                     }
                 });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        ((AppCompatActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String userInput = newText.toLowerCase();
+                List<Movie> newMovies = new ArrayList<>();
+                System.out.println(userInput);
+                for (Movie el: listedMovies) {
+                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                        newMovies.add(el);
+                    }
+                }
+
+                adapter.addItem(newMovies);
+
+                return false;
+            }
+        });
     }
 
     @Override

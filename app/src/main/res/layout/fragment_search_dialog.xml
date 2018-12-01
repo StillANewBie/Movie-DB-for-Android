@@ -8,10 +8,22 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_dialog_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        >
+    </android.support.v7.widget.Toolbar>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_name_edt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
+        >
 
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
@@ -22,7 +34,9 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_year_edt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="10dp">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -36,12 +50,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_search_cancel"
+        android:background="@color/dark_blue"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
         android:text="@string/cancel"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_search_confirm"
+        android:background="@color/dark_blue"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
         android:text="@string/search_btn"/>
 
 

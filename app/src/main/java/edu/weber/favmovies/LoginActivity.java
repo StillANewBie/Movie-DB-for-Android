@@ -2,6 +2,7 @@ package edu.weber.favmovies;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText email, password;
+    TextInputLayout email, password;
     Button login, signup;
     private FirebaseAuth mAuth;
 
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                email.getEditText().setText("");
+                password.getEditText().setText("");
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
@@ -61,22 +64,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginEvent() {
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+        mAuth.signInWithEmailAndPassword(email.getEditText().getText().toString(), password.getEditText().getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            Toast.makeText(LoginActivity.this, getString(R.string.welcome_back),
+                                    Toast.LENGTH_LONG).show();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            Toast.makeText(LoginActivity.this, R.string.auth_fail,
+                                    Toast.LENGTH_LONG).show();
                         }
-
-                        // ...
+                        email.getEditText().setText("");
+                        password.getEditText().setText("");
                     }
                 });
     }

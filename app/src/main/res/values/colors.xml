@@ -9,5 +9,8 @@
     <color name="colorDarkGray">#555</color>
     <color name="colorGray">#888</color>
     <color name="bright_blue">#002f58</color>
-
+    <color name="dark_blue">#13799C</color>
+    <color name="light_red">#FF5454</color>
+    <color name="purple">#D57AFF</color>
+    <color name="very_light_blue">#D9F4FF</color>
 </resources>

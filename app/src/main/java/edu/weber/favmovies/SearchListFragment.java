@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -91,6 +93,13 @@ public class SearchListFragment extends DialogFragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_results);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+        }
         setHasOptionsMenu(true);
 
         searchView = (MaterialSearchView) root.findViewById(R.id.search_search_view);
@@ -188,10 +197,11 @@ public class SearchListFragment extends DialogFragment {
         JsonObject body = gson.fromJson(rawJSON, JsonObject.class);
         movies = new ArrayList<>();
 
-        for (JsonElement jo : body.get("Search").getAsJsonArray()) {
-            movies.add(gson.fromJson(jo, Movie.class));
+        if (body.get("Search") != null) {
+            for (JsonElement jo : body.get("Search").getAsJsonArray()) {
+                movies.add(gson.fromJson(jo, Movie.class));
+            }
         }
-
         adapter.addItem(movies);
 
     }
@@ -223,6 +233,20 @@ public class SearchListFragment extends DialogFragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            FragmentManager manager = getFragmentManager();
+            manager.popBackStack();
+            manager.executePendingTransactions();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

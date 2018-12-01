@@ -1,5 +1,7 @@
 package edu.weber.favmovies;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +26,13 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         notifyDataSetChanged();
     }
 
+    public Movie getMovieAt(int position) {
+        return this.movies.get(position);
+    }
+
     public interface OnRecyclerViewAdapterListener {
         void showMovieDialog(Movie movie);
+        void openImdbPage(String imdbID);
     }
     public MovieRecyclerViewAdapter(List<Movie> items, OnRecyclerViewAdapterListener listener) {
         movies = items;
@@ -41,7 +48,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Movie movie = movies.get(position);
+        final Movie movie = movies.get(position);
         if (movie != null) {
             holder.movie = movie;
             holder.movieTitle.setText("Title: " + movie.getTitle());
@@ -51,7 +58,16 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // ToDo: attach to a movie view
+                    mCallback.showMovieDialog(movie);
+                }
+            });
+
+            holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    mCallback.openImdbPage(movie.getImdbID());
+                    return true;
                 }
             });
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,13 +27,36 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.fav_toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        getSupportActionBar().setTitle(R.string.saved_movies);
+//        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+//
+//        searchView = (MaterialSearchView) findViewById(R.id.fav_filter);
+//        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+//            @Override
+//            public void onSearchViewShown() {
+//
+//            }
+//
+//            @Override
+//            public void onSearchViewClosed() {
+//
+//            }
+//        });
+//        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
 
-        getSupportActionBar().setTitle(R.string.movie_search);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,17 +76,42 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_item, menu);
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        searchView.setMenuItem(item);
+//        return true;
+//    }
 
     @Override
     public void showMovieDialog(Movie movie) {
-        System.out.println(movie);
+        FragmentManager fm = getSupportFragmentManager();
+        MovieViewFragment movieViewFragment = new MovieViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.imdbid), movie.getImdbID());
+        movieViewFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, movieViewFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void openImdbPage(String imdbID) {
+        FragmentManager fm = getSupportFragmentManager();
+        WebPageFragment webPageFragment = new WebPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.imdbid), imdbID);
+        webPageFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, webPageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -81,6 +130,5 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 .add(android.R.id.content, searchListFragment)
                 .addToBackStack(null)
                 .commit();
-
     }
 }

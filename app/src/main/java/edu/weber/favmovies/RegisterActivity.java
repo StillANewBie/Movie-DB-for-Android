@@ -72,22 +72,26 @@ public class RegisterActivity extends AppCompatActivity {
                     final StorageReference storageReference =
                             FirebaseStorage.getInstance().getReference().child("users").child(uid);
 
-                    storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (imageUri != null) {
+                        storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                            String imageUrl = task.toString();
+                                String imageUrl = task.toString();
 
-                            User user = new User();
-                            user.setName(etName.getText().toString());
-                            user.setUid(etID.getText().toString());
-                            user.setImageUrl(imageUrl);
+                                User user = new User();
+                                user.setName(etName.getText().toString());
+                                user.setUid(etID.getText().toString());
+                                user.setImageUrl(imageUrl);
 
-                            FirebaseDatabase.getInstance().getReference().child("users").child
-                                    (uid).setValue(user);
+                                FirebaseDatabase.getInstance().getReference().child("users").child
+                                        (uid).setValue(user);
 
-                        }
-                    });
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            }
+                        });
+                    }
+
                 } else {
                     Toast.makeText(RegisterActivity.this, "Error", Toast.LENGTH_LONG).show();
                 }
