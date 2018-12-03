@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -75,6 +78,65 @@ public class MovieListFragment extends Fragment {
         setHasOptionsMenu(true);
 
         searchView = (MaterialSearchView) root.findViewById(R.id.search_search_view);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT
+                | ItemTouchHelper.RIGHT | ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+                final int position = viewHolder.getAdapterPosition();
+
+                if (swipeDir == 4 || swipeDir == 8) {
+                    Toast.makeText(getContext(), R.string.movie_deleted, Toast.LENGTH_SHORT)
+                            .show();
+                    adapter.notifyItemRemoved(position);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .delete(mCallback.swipeToDelete().get(position));
+                        }
+                    }).start();
+                } else {
+                    Movie movie = mCallback.swipeToDelete().get(position);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Movie movie = mCallback.swipeToDelete().get(position);
+
+                            if (AppDatabase.getInstance(getContext()).movieDAO().loadByImdbID(movie
+                                    .getImdbID()) != null) {
+                                AppDatabase.getInstance(getContext())
+                                        .movieDAO()
+                                        .delete(movie);
+                            }
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .insert(movie);
+                        }
+                    }).start();
+
+
+                    Toast.makeText(getContext(), movie.getTitle() + getString(R.string.moved_to_top), Toast
+                            .LENGTH_SHORT)
+                            .show();
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
 
         return root;
     }

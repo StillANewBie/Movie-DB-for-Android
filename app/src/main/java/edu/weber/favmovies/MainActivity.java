@@ -1,19 +1,15 @@
 package edu.weber.favmovies;
 
-import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.List;
 
 import edu.weber.favmovies.db.Movie;
 
@@ -112,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 .add(android.R.id.content, webPageFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public List<Movie> swipeToDelete() {
+        return MovieRecyclerViewAdapter.getMovies();
     }
 
     @Override

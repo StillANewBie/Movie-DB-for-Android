@@ -1,7 +1,6 @@
 package edu.weber.favmovies;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,23 @@ import android.widget.TextView;
 
 import edu.weber.favmovies.db.*;
 
-import edu.weber.favmovies.MovieListFragment.OnListFragmentInteractionListener;
-
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Movie> movies;
+    private static List<Movie> movies = null;
     private final OnRecyclerViewAdapterListener mCallback;
+    public interface OnRecyclerViewAdapterListener {
+        void showMovieDialog(Movie movie);
+        void openImdbPage(String imdbID);
+        List<Movie> swipeToDelete();
+    }
 
     public void addItem(List<Movie> localMovies) {
         movies.clear();
+        Collections.reverse(localMovies);
         movies.addAll(localMovies);
         notifyDataSetChanged();
     }
@@ -30,10 +35,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return this.movies.get(position);
     }
 
-    public interface OnRecyclerViewAdapterListener {
-        void showMovieDialog(Movie movie);
-        void openImdbPage(String imdbID);
-    }
     public MovieRecyclerViewAdapter(List<Movie> items, OnRecyclerViewAdapterListener listener) {
         movies = items;
         mCallback = listener;
@@ -93,5 +94,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
             poster = (ImageView) itemView.findViewById(R.id.thumb_pic);
         }
 
+    }
+
+    public static List<Movie> getMovies() {
+        return movies;
     }
 }
