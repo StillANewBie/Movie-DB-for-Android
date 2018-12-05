@@ -1,47 +1,100 @@
 package edu.weber.favmovies;
 
-import android.content.Intent;
-import android.graphics.Color;
+import android.content.ClipData;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
 
-    private MaterialSearchView searchView;
-    String[] strings = {"a", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c"};
-    private ListView listView;
+import edu.weber.favmovies.db.Movie;
+
+public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter
+        .OnRecyclerViewAdapterListener, SearchDialogFragment.OnSearchDialogFragmentComplete{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
 
-        getSupportActionBar().setTitle(R.string.movie_search);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+                SearchDialogFragment sdf = new SearchDialogFragment();
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, strings);
-        listView.setAdapter(adapter);
+                fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .add(android.R.id.content, sdf)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-        return true;
+    public void showMovieDialog(Movie movie) {
+        FragmentManager fm = getSupportFragmentManager();
+        MovieViewFragment movieViewFragment = new MovieViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.imdbid), movie.getImdbID());
+        movieViewFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, movieViewFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void openImdbPage(String imdbID) {
+        FragmentManager fm = getSupportFragmentManager();
+        WebPageFragment webPageFragment = new WebPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.imdbid), imdbID);
+        webPageFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, webPageFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public List<Movie> swipeToDelete() {
+        return MovieRecyclerViewAdapter.getMovies();
+    }
+
+    @Override
+    public void doSearch(String name, String year) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        bundle.putString("year", year);
+
+        FragmentManager fm = getSupportFragmentManager();
+        SearchListFragment searchListFragment = new SearchListFragment();
+
+        searchListFragment.setArguments(bundle);
+
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, searchListFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
