@@ -70,9 +70,9 @@ public class MovieListFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.rvMovieList);
 
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.fav_toolbar);
+        toolbar.setTitle(R.string.app_name);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_results);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();

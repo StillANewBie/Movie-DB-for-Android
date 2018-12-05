@@ -18,10 +18,4 @@ public class AllFavMovieViewModel extends ViewModel {
 
         return movieList = AppDatabase.getInstance(c).movieDAO().getAll();
     }
-
-    public LiveData<List<Movie>> getMovieListByTitle(Context c) {
-        if (movieList != null) return movieList;
-
-        return movieList = AppDatabase.getInstance(c).movieDAO().sortByTytle();
-    }
 }

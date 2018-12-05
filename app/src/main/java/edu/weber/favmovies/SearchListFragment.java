@@ -45,6 +45,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import edu.weber.favmovies.api.Authorization;
+import edu.weber.favmovies.db.AppDatabase;
 import edu.weber.favmovies.db.Movie;
 
 public class SearchListFragment extends DialogFragment {
@@ -240,9 +241,30 @@ public class SearchListFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            FragmentManager manager = getFragmentManager();
-            manager.popBackStack();
-            manager.executePendingTransactions();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Movie movie = mCallback.swipeToDelete().get(0);
+
+                    if (AppDatabase.getInstance(getContext()).movieDAO().loadByImdbID(movie
+                            .getImdbID()) != null) {
+                        AppDatabase.getInstance(getContext())
+                                .movieDAO()
+                                .delete(movie);
+                    }
+                    AppDatabase.getInstance(getContext())
+                            .movieDAO()
+                            .insert(movie);
+                    AppDatabase.getInstance(getContext())
+                            .movieDAO()
+                            .delete(movie);
+                }
+            }).start();
+//            FragmentManager manager = getFragmentManager();
+//            manager.popBackStack();
+//            manager.executePendingTransactions();
+            dismiss();
             return true;
         }
 

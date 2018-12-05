@@ -22,11 +22,6 @@ import edu.weber.favmovies.db.Movie;
 public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter
         .OnRecyclerViewAdapterListener, SearchDialogFragment.OnSearchDialogFragmentComplete{
 
-    private MaterialSearchView searchView;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private boolean isSortedByTitle = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
