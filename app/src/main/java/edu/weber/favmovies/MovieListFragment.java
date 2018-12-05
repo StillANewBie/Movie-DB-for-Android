@@ -47,7 +47,6 @@ public class MovieListFragment extends Fragment {
     private MaterialSearchView searchView;
     private AllFavMovieViewModel allFavMovieViewModel;
     List<Movie> listedMovies = new ArrayList<>();
-    private String sortBy = "";
 
     public MovieListFragment() {
     }
@@ -69,11 +68,7 @@ public class MovieListFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvMovieList);
-//
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            sortBy = bundle.getString("order");
-//        }
+
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.fav_toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -143,8 +138,6 @@ public class MovieListFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
-
         return root;
     }
 
@@ -164,39 +157,20 @@ public class MovieListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(false);
 
-        if (sortBy.equals("title")) {
-            ViewModelProviders.of(this)
-                    .get(AllFavMovieViewModel.class)
-                    .getMovieList(context)
-                    .observe(this, new Observer<List<Movie>>() {
+        ViewModelProviders.of(this)
+                .get(AllFavMovieViewModel.class)
+                .getMovieList(context)
+                .observe(this, new Observer<List<Movie>>() {
 
-                        @Override
-                        public void onChanged(@Nullable List<Movie> movies) {
-                            if (movies != null) {
-                                adapter.addItem(movies);
-                                listedMovies = movies;
-                            }
+                    @Override
+                    public void onChanged(@Nullable List<Movie> movies) {
+                        if (movies != null) {
+                            adapter.addItem(movies);
+                            listedMovies = movies;
                         }
-                    });
-        } else {
-            ViewModelProviders.of(this)
-                    .get(AllFavMovieViewModel.class)
-                    .getMovieListByTitle(context)
-                    .observe(this, new Observer<List<Movie>>() {
+                    }
+                });
 
-                        @Override
-                        public void onChanged(@Nullable List<Movie> movies) {
-                            if (movies != null) {
-                                adapter.addItem(movies);
-                                listedMovies = movies;
-                            }
-                        }
-                    });
-        }
-    }
-
-    public void sortByTitle() {
-        adapter.orderByTitle();
     }
 
 
@@ -244,10 +218,5 @@ public class MovieListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-    }
-
-
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
     }
 }

@@ -32,11 +32,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        navigationView = (NavigationView) findViewById(R.id.nav_menu);
-//
-//        navigationView.setNavigationItemSelectedListener(this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,30 +102,4 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 .addToBackStack(null)
                 .commit();
     }
-
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//
-//        switch (id) {
-//            case R.id.nav_title:
-//                FragmentManager fm = getSupportFragmentManager();
-//                MovieListFragment movieListFragment = new MovieListFragment();
-//                Bundle bundle = new Bundle();
-//                if (isSortedByTitle) {
-//                    bundle.putString("order", "titleR");
-//                } else {
-//                    bundle.putString("order", "title");
-//                }
-//                movieListFragment.setArguments(bundle);
-//
-//                fm.beginTransaction()
-//                        .replace(R.id.content_main, movieListFragment, "fragMLF")
-//                        .commit();
-//                break;
-//        }
-//
-//        drawerLayout.closeDrawer(GravityCompat.START);
-//        return false;
-//    }
 }

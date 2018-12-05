@@ -32,17 +32,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         notifyDataSetChanged();
     }
 
-    public void orderByTitle() {
-        Collections.sort(movies, new Comparator<Movie>() {
-            @Override
-            public int compare(Movie movie, Movie t1) {
-                return movie.getTitle().compareTo(t1.getTitle());
-            }
-        });
-
-        notifyDataSetChanged();
-    }
-
     public Movie getMovieAt(int position) {
         return this.movies.get(position);
     }
