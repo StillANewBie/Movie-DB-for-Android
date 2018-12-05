@@ -1,10 +1,16 @@
 package edu.weber.favmovies;
 
+import android.content.ClipData;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -14,45 +20,22 @@ import java.util.List;
 import edu.weber.favmovies.db.Movie;
 
 public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter
-        .OnRecyclerViewAdapterListener, SearchDialogFragment.OnSearchDialogFragmentComplete {
+        .OnRecyclerViewAdapterListener, SearchDialogFragment.OnSearchDialogFragmentComplete{
 
     private MaterialSearchView searchView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private boolean isSortedByTitle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.fav_toolbar);
-//        setSupportActionBar(toolbar);
+//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        navigationView = (NavigationView) findViewById(R.id.nav_menu);
 //
-//        getSupportActionBar().setTitle(R.string.saved_movies);
-//        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-//
-//        searchView = (MaterialSearchView) findViewById(R.id.fav_filter);
-//        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-//            @Override
-//            public void onSearchViewShown() {
-//
-//            }
-//
-//            @Override
-//            public void onSearchViewClosed() {
-//
-//            }
-//        });
-//        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
-
+//        navigationView.setNavigationItemSelectedListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,14 +54,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         });
 
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_item, menu);
-//        MenuItem item = menu.findItem(R.id.action_search);
-//        searchView.setMenuItem(item);
-//        return true;
-//    }
 
     @Override
     public void showMovieDialog(Movie movie) {
@@ -132,4 +107,30 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 .addToBackStack(null)
                 .commit();
     }
+
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.nav_title:
+//                FragmentManager fm = getSupportFragmentManager();
+//                MovieListFragment movieListFragment = new MovieListFragment();
+//                Bundle bundle = new Bundle();
+//                if (isSortedByTitle) {
+//                    bundle.putString("order", "titleR");
+//                } else {
+//                    bundle.putString("order", "title");
+//                }
+//                movieListFragment.setArguments(bundle);
+//
+//                fm.beginTransaction()
+//                        .replace(R.id.content_main, movieListFragment, "fragMLF")
+//                        .commit();
+//                break;
+//        }
+//
+//        drawerLayout.closeDrawer(GravityCompat.START);
+//        return false;
+//    }
 }

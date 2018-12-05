@@ -12,6 +12,7 @@ import edu.weber.favmovies.db.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
@@ -28,6 +29,17 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         movies.clear();
         Collections.reverse(localMovies);
         movies.addAll(localMovies);
+        notifyDataSetChanged();
+    }
+
+    public void orderByTitle() {
+        Collections.sort(movies, new Comparator<Movie>() {
+            @Override
+            public int compare(Movie movie, Movie t1) {
+                return movie.getTitle().compareTo(t1.getTitle());
+            }
+        });
+
         notifyDataSetChanged();
     }
 

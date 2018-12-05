@@ -37,4 +37,5 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="movie_deleted">Movie deleted from Fav list</string>
     <string name="moved_to_top">moved to top.</string>
+    <string name="sort_by_title">Sort By Title</string>
 </resources>
