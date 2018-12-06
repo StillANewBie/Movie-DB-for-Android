@@ -3,20 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <item
-            android:id="@+id/action_search"
+            android:id="@+id/action_search_search"
             android:orderInCategory="100"
             android:title="@string/search"
             app:showAsAction="always"
             android:icon="@drawable/ic_action_action_search"/>
 
-        <item
-            android:id="@+id/sort_by_title"
-            android:title="@string/sort_by_title"
-            app:showAsAction="never"></item>
-
-        <item
-            android:id="@+id/sort_by_year"
-            android:title="Sort By Year"
-            app:showAsAction="never"></item>
 
 </menu>

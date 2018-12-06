@@ -47,6 +47,7 @@ public class MovieListFragment extends Fragment {
     private MaterialSearchView searchView;
     private AllFavMovieViewModel allFavMovieViewModel;
     List<Movie> listedMovies = new ArrayList<>();
+    private String sortBy = "";
 
     public MovieListFragment() {
     }
@@ -173,7 +174,6 @@ public class MovieListFragment extends Fragment {
 
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         ((AppCompatActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_item, menu);
@@ -191,7 +191,8 @@ public class MovieListFragment extends Fragment {
                 List<Movie> newMovies = new ArrayList<>();
                 System.out.println(userInput);
                 for (Movie el: listedMovies) {
-                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                    if (el.getTitle().toLowerCase().contains(userInput) ||
+                            (el.getYear() != null && el.getYear().contains(userInput))) {
                         newMovies.add(el);
                     }
                 }
@@ -201,6 +202,61 @@ public class MovieListFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_by_title:
+
+                if (!sortBy.equals("title")) {
+                    Collections.sort(listedMovies, new Comparator<Movie>() {
+                        @Override
+                        public int compare(Movie movie, Movie t1) {
+                            return movie.getTitle().compareTo(t1.getTitle());
+                        }
+                    });
+
+                    sortBy = "title";
+                } else {
+                    Collections.sort(listedMovies, new Comparator<Movie>() {
+                        @Override
+                        public int compare(Movie movie, Movie t1) {
+                            return t1.getTitle().compareTo(movie.getTitle());
+                        }
+                    });
+
+                    sortBy = "titleR";
+                }
+
+                adapter.addItem(listedMovies);
+
+                return true;
+            case R.id.sort_by_year:
+                if (!sortBy.equals("year")) {
+                    Collections.sort(listedMovies, new Comparator<Movie>() {
+                        @Override
+                        public int compare(Movie movie, Movie t1) {
+                            return movie.getYear().compareTo(t1.getYear());
+                        }
+                    });
+
+                    sortBy = "year";
+                } else {
+                    Collections.sort(listedMovies, new Comparator<Movie>() {
+                        @Override
+                        public int compare(Movie movie, Movie t1) {
+                            return t1.getYear().compareTo(movie.getYear());
+                        }
+                    });
+
+                    sortBy = "yearR";
+                }
+                adapter.addItem(listedMovies);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

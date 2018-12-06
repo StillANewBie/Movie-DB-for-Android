@@ -40,6 +40,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -59,6 +61,7 @@ public class SearchListFragment extends DialogFragment {
     String movieName, movieYear;
     private MaterialSearchView searchView;
     List<Movie> movies;
+    private String sortBy = "";
 
     public SearchListFragment() {
     }
@@ -209,8 +212,9 @@ public class SearchListFragment extends DialogFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        ((AppCompatActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
+        ((AppCompatActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_item_search,
+                menu);
+        MenuItem item = menu.findItem(R.id.action_search_search);
         searchView.setMenuItem(item);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -224,7 +228,8 @@ public class SearchListFragment extends DialogFragment {
                 List<Movie> newMovies = new ArrayList<>();
                 System.out.println(userInput);
                 for (Movie el: movies) {
-                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                    if (el.getTitle().toLowerCase().contains(userInput) ||
+                            (el.getYear() != null && el.getYear().contains(userInput))) {
                         newMovies.add(el);
                     }
                 }
@@ -240,32 +245,37 @@ public class SearchListFragment extends DialogFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
-
+        switch (id) {
+            case android.R.id.home:
             new Thread(new Runnable() {
                 @Override
-                public void run() {
-                    Movie movie = mCallback.swipeToDelete().get(0);
+                    public void run() {
+                        Movie movie = mCallback.swipeToDelete().get(0);
 
-                    if (AppDatabase.getInstance(getContext()).movieDAO().loadByImdbID(movie
-                            .getImdbID()) != null) {
-                        AppDatabase.getInstance(getContext())
-                                .movieDAO()
-                                .delete(movie);
+                        if (AppDatabase.getInstance(getContext()).movieDAO().loadByImdbID(movie
+                                .getImdbID()) != null) {
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .delete(movie);
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .insert(movie);
+                        } else {
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .insert(movie);
+                            AppDatabase.getInstance(getContext())
+                                    .movieDAO()
+                                    .delete(movie);
+                        }
                     }
-                    AppDatabase.getInstance(getContext())
-                            .movieDAO()
-                            .insert(movie);
-                    AppDatabase.getInstance(getContext())
-                            .movieDAO()
-                            .delete(movie);
-                }
-            }).start();
-//            FragmentManager manager = getFragmentManager();
-//            manager.popBackStack();
-//            manager.executePendingTransactions();
-            dismiss();
-            return true;
+                }).start();
+                FragmentManager manager = getFragmentManager();
+                manager.popBackStack();
+                manager.executePendingTransactions();
+                dismiss();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
