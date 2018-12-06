@@ -191,7 +191,8 @@ public class MovieListFragment extends Fragment {
                 List<Movie> newMovies = new ArrayList<>();
                 System.out.println(userInput);
                 for (Movie el: listedMovies) {
-                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                    if (el.getTitle().toLowerCase().contains(userInput) ||
+                            (el.getYear() != null && el.getYear().contains(userInput))) {
                         newMovies.add(el);
                     }
                 }

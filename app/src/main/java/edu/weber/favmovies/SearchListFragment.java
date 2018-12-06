@@ -224,7 +224,8 @@ public class SearchListFragment extends DialogFragment {
                 List<Movie> newMovies = new ArrayList<>();
                 System.out.println(userInput);
                 for (Movie el: movies) {
-                    if (el.getTitle().toLowerCase().contains(userInput)) {
+                    if (el.getTitle().toLowerCase().contains(userInput) ||
+                            (el.getYear() != null && el.getYear().contains(userInput))) {
                         newMovies.add(el);
                     }
                 }
@@ -252,18 +253,22 @@ public class SearchListFragment extends DialogFragment {
                         AppDatabase.getInstance(getContext())
                                 .movieDAO()
                                 .delete(movie);
+                        AppDatabase.getInstance(getContext())
+                                .movieDAO()
+                                .insert(movie);
+                    } else {
+                        AppDatabase.getInstance(getContext())
+                                .movieDAO()
+                                .insert(movie);
+                        AppDatabase.getInstance(getContext())
+                                .movieDAO()
+                                .delete(movie);
                     }
-                    AppDatabase.getInstance(getContext())
-                            .movieDAO()
-                            .insert(movie);
-                    AppDatabase.getInstance(getContext())
-                            .movieDAO()
-                            .delete(movie);
                 }
             }).start();
-//            FragmentManager manager = getFragmentManager();
-//            manager.popBackStack();
-//            manager.executePendingTransactions();
+            FragmentManager manager = getFragmentManager();
+            manager.popBackStack();
+            manager.executePendingTransactions();
             dismiss();
             return true;
         }
