@@ -71,11 +71,13 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-
+                            String username = user.getEmail().split("@")[0];
+                            username = username.substring(0, 1).toUpperCase() + username.substring
+                                    (1);
 
                             System.out.println(user.getUid());
-                            Toast.makeText(LoginActivity.this, getString(R.string.welcome_back),
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.welcome_back) +
+                                            " " + username + "!", Toast.LENGTH_LONG).show();
                             updateUI(user);
                         } else {
                             Toast.makeText(LoginActivity.this, R.string.auth_fail,
